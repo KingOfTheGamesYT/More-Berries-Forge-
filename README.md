@@ -1,2 +1,2 @@
-# More berries mod
-A mod for fabric that adds more berries. Download: https://www.curseforge.com/minecraft/mc-mods/more-berries
+# More berries (Forge) mod
+A port for Forge of the Fabric mod that adds more berries. Download:https://www.curseforge.com/minecraft/mc-mods/more-berries-forge
