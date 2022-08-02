@@ -1,0 +1,45 @@
+modLoader="javafml"
+
+loaderVersion="[36,)"
+
+license="All Rights Reserved"
+
+issueTrackerURL="https://github.com/KingOfTheGamesYT/More-Berries-Forge-/issues"
+
+[[mods]]
+itemIcon="moreberries:blue_berries"
+
+configBackground="moreberries:textures/blue_berry_cake.png"
+
+modId="moreberries"
+
+version="0.0.1"
+
+displayName="More Berries"
+
+displayURL="https://www.curseforge.com/minecraft/mc-mods/more-berries-forge"
+
+logoFile="icon.png"
+
+credits="Thanks to MCrafterzz for making the Fabric versions"
+
+authors=["RedRoseWarrior1 aka DevMaster1015 for the forge versions","MCrafterzz for the Fabric versions"]
+
+description='''
+Adds more berries, that can be used for cakes and more!'''
+
+# Base Forge
+[[dependencies.moreberries]]
+    modId="forge"
+    mandatory=true
+    versionRange="[36,)"
+    ordering="NONE"
+    side="BOTH"
+
+# Base Minecraft
+[[dependencies.moreberries]]
+    modId="minecraft"
+    mandatory=true
+versionRange="[1.16.5,1.17]"
+    ordering="NONE"
+    side="BOTH"
