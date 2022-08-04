@@ -1,35 +1,67 @@
 package moreberries.config;
 
-import me.shedaniel.autoconfig.ConfigData;
-import me.shedaniel.autoconfig.annotation.Config;
+import moreberries.BiomeDictionaryHelper;
+import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.ForgeConfigSpec;
 
-@Config(name = "moreberries")
-public class MoreBerriesConfig implements ConfigData {
+import java.util.Arrays;
+import java.util.List;
 
-    public int blackBerrySpawnChance = 16;
-    public int blueBerrySpawnChance = 16;
-    public int greenBerrySpawnChance = 16;
-    public int orangeBerrySpawnChance = 16;
-    public int purpleBerrySpawnChance = 16;
-    public int yellowBerrySpawnChance = 16;
+import static net.minecraft.world.biome.Biomes.BIRCH_FOREST;
+import static net.minecraft.world.biome.Biomes.TALL_BIRCH_FOREST;
+import static net.minecraftforge.common.BiomeDictionary.Type.*;
 
-    public String blackBerrySpawnBiomes = "minecraft:plains";
-    public String blueBerrySpawnBiomes = "minecraft:forest,minecraft:flower_forest,minecraft:dark_forest,minecraft:grove";
-    public String greenBerrySpawnBiomes = "#minecraft:is_jungle";
-    public String orangeBerrySpawnBiomes = "#minecraft:is_badlands,minecraft:savanna,minecraft:savanna_plateau,minecraft:windswept_savanna";
-    public String purpleBerrySpawnBiomes = "minecraft:swamp,minecraft:mangrove_swamp";
-    public String yellowBerrySpawnBiomes = "minecraft:birch_forest, minecraft:old_growth_birch_forest";
 
-    public boolean craftableBerryBushes = false;
-    public boolean replaceSweetBerryBushModel = true;
+public class MoreBerriesConfig {
+    public static ForgeConfigSpec.IntValue blackBerrySpawnChance;
+    public static ForgeConfigSpec.IntValue blueBerrySpawnChance;
+    public static ForgeConfigSpec.IntValue greenBerrySpawnChance;
+    public static ForgeConfigSpec.IntValue orangeBerrySpawnChance;
+    public static ForgeConfigSpec.IntValue purpleBerrySpawnChance;
+    public static ForgeConfigSpec.IntValue yellowBerrySpawnChance;
+    public static ForgeConfigSpec.ConfigValue<List<? extends String>> blackBerrySpawnBiomes;
+    public static ForgeConfigSpec.ConfigValue<List<? extends String>> blueBerrySpawnBiomes;
+    public static ForgeConfigSpec.ConfigValue<List<? extends String>> greenBerrySpawnBiomes;
+    public static ForgeConfigSpec.ConfigValue<List<? extends String>> orangeBerrySpawnBiomes;
+    public static ForgeConfigSpec.ConfigValue<List<? extends String>> purpleBerrySpawnBiomes;
+    public static ForgeConfigSpec.ConfigValue<List<? extends String>> yellowBerrySpawnBiomes;
+    public static ForgeConfigSpec.BooleanValue craftableBerryBushes;
+    public static ForgeConfigSpec.BooleanValue replaceSweetBerryBushModel;
 
-    @Override
-    public void validatePostLoad() throws ValidationException {
-        blackBerrySpawnChance = Math.max(blackBerrySpawnChance, 1);
-        blueBerrySpawnChance = Math.max(blueBerrySpawnChance, 1);
-        greenBerrySpawnChance = Math.max(greenBerrySpawnChance, 1);
-        orangeBerrySpawnChance = Math.max(orangeBerrySpawnChance, 1);
-        purpleBerrySpawnChance = Math.max(purpleBerrySpawnChance, 1);
-        yellowBerrySpawnChance = Math.max(yellowBerrySpawnChance, 1);
+    public MoreBerriesConfig() {
     }
+
+    public static void COMMON(ForgeConfigSpec.Builder builder) {
+        builder.comment("Spawn Chances");
+        builder.comment("Configure Berry bush spawn weight (How frequently they spawn. Set weight to 0 to disable.");
+        builder.push("Berry Bush Spawn Chances");
+        blackBerrySpawnChance = builder.defineInRange("Black Berry Spawn Chance", 16, 0, 640);
+        blueBerrySpawnChance = builder.defineInRange("Blue Berry Spawn Chance", 16, 0, 640);
+        greenBerrySpawnChance = builder.defineInRange("Green Berry Spawn Chance", 16, 0, 640);
+        orangeBerrySpawnChance = builder.defineInRange("Orange Berry Spawn Chance", 16, 0, 640);
+        purpleBerrySpawnChance = builder.defineInRange("Purple Berry Spawn Chance", 16, 0, 640);
+        yellowBerrySpawnChance = builder.defineInRange("Yellow Berry Spawn Chance", 16, 0, 640);
+        builder.pop();
+
+        builder.comment("Berry Bush Spawnable Biomes");
+        builder.push("Berry Bush Biomes Whitelist/Blacklist");
+        blackBerrySpawnBiomes = builder.defineList("include Black Berry Bush", Arrays.asList(PLAINS.toString()), o -> o instanceof String && (o.equals("") || BiomeDictionary.Type.getAll().contains(BiomeDictionaryHelper.getType(o.toString()))));
+        blueBerrySpawnBiomes = builder.defineList("include Blue Berry Bush", Arrays.asList(FOREST.toString()), o -> o instanceof String && (o.equals("") || BiomeDictionary.Type.getAll().contains(BiomeDictionaryHelper.getType(o.toString()))));
+        greenBerrySpawnBiomes = builder.defineList("include Green Berry Bush", Arrays.asList(JUNGLE.toString()), o -> o instanceof String && (o.equals("") || BiomeDictionary.Type.getAll().contains(BiomeDictionaryHelper.getType(o.toString()))));
+        orangeBerrySpawnBiomes = builder.defineList("include Orange Berry Bush", Arrays.asList(MESA.toString(), SAVANNA.toString()), o -> o instanceof String && (o.equals("") || BiomeDictionary.Type.getAll().contains(BiomeDictionaryHelper.getType(o.toString()))));
+        purpleBerrySpawnBiomes = builder.defineList("include Purple Berry Bush", Arrays.asList(SWAMP.toString()), o -> o instanceof String && (o.equals("") || BiomeDictionary.Type.getAll().contains(BiomeDictionaryHelper.getType(o.toString()))));
+        yellowBerrySpawnBiomes = builder.defineList("include Yellow Berry Bush", Arrays.asList(BIRCH_FOREST.toString(), TALL_BIRCH_FOREST.toString()), o -> o instanceof String && (o.equals("") || BiomeDictionary.Type.getAll().contains(BiomeDictionaryHelper.getType(o.toString()))));
+        builder.pop();
+
+        builder.comment("Craftable Berry Bush");
+        builder.push("Decide weather or not the Berry Bushes are craftable");
+        craftableBerryBushes = builder.define("include Black Berry Bush", false);
+        builder.pop();
+
+        builder.comment("Replace Sweet Berry Bush Model");
+        builder.push("Decide weather or not the Sweet Berry Bushes have a cube model");
+        replaceSweetBerryBushModel = builder.define("include Black Berry Bush", true);
+        builder.pop();
+    }
+
 }
